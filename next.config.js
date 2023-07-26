@@ -9,11 +9,6 @@ const nextConfig = {
       },
     ];
   },
-  exportPathMap: function () {
-    return {
-      "/": { page: "/dashboard/account_overview" }, // Specify your desired root page here
-    };
-  },
 };
 
 module.exports = nextConfig;

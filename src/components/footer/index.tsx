@@ -20,7 +20,7 @@ export default function Footer() {
               color="error"
               sx={{ fontWeight: 800, fontFamily: "Montserrat" }}
             >
-              Travellr
+              Travllr
             </Typography>
           </Grid>
           <Grid item>

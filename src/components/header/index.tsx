@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Box, Container, Typography } from "@mui/material";
 import { FlexRow } from "../FlexRow";
 import NavBar from "./navbar";
@@ -12,13 +13,15 @@ export default function Header() {
             alignItems="center"
             sx={{ padding: 2.2, bgcolor: "white" }}
           >
-            <Typography
-              variant="h5"
-              color="error"
-              sx={{ fontWeight: 800, fontFamily: "Montserrat" }}
-            >
-              Travellr
-            </Typography>
+            <Link href="/">
+              <Typography
+                variant="h5"
+                color="error"
+                sx={{ fontWeight: 800, fontFamily: "Montserrat" }}
+              >
+                Travllr
+              </Typography>
+            </Link>
             <Box>
               <NavBar />
             </Box>
