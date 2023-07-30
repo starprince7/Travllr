@@ -42,7 +42,7 @@ export default function Footer() {
               Contact Us
             </Typography>
             <Typography sx={{ mb: 1.2 }} variant="body2">
-              FAQ's
+              FAQ&apos;s
             </Typography>
             <Typography sx={{ mb: 1.2 }} variant="body2">
               Find a Terminal

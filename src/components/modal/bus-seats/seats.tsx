@@ -90,6 +90,7 @@ export default function SeatSelectionStep({ goToNextStep }: Props) {
             </Grid>
             {seats.map((s, index) => (
               <Seat
+                key={index}
                 data={s}
                 selectedSeatNumber={selectedSeatNumber!}
                 onClick={(number) => dispatch(setSeatNumber(number))}
