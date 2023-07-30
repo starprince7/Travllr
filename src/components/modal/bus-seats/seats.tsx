@@ -1,5 +1,5 @@
-import React from "react";
-import { FlexRow } from "@/components/FlexRow";
+import React, { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -10,24 +10,41 @@ import {
   useTheme,
 } from "@mui/material";
 import InnerSeatIcon from "@mui/icons-material/EventSeat";
+
 import Seat from "./seat";
+import { FlexRow } from "@/components/FlexRow";
+import { BusBookingContext } from "@/components/bus-detail";
+import { BusSeat } from "@/types/seat";
+import CircularLoader from "@/components/loader/circular-progress";
+import { fetchSeats, selectSeats } from "@/store/slices/bus-seats";
+import { AnyAction } from "@reduxjs/toolkit";
+import {
+  selectBookingProgress,
+  setSeatNumber,
+} from "@/store/slices/ticket-booking";
 
 type Props = {
-  handleNext: () => void;
+  goToNextStep: () => void;
 };
 
-export default function Seats({ handleNext }: Props) {
-  const [selectedSeatNumber, setSelectedSeatNumber] = React.useState<number>();
+export default function SeatSelectionStep({ goToNextStep }: Props) {
+  const { seatNumber: selectedSeatNumber } = useSelector(selectBookingProgress);
+  const { seats, networkRequestStatus } = useSelector(selectSeats);
+  const { busId } = useContext(BusBookingContext);
+
+  const dispatch = useDispatch();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const columnSpacing = isSmallScreen ? 4 : 9; // Adjust the values as per your preference
+  const columnSpacing = isSmallScreen ? 4 : 9;
 
-  const handleSeatBooking = () => {
-    alert("Booking a seat...");
-    handleNext();
+  useEffect(() => {
+    if (seats.length > 0) return;
+    dispatch(fetchSeats(busId) as unknown as AnyAction);
+  }, [seats]);
+
+  const handleContinue = () => {
+    goToNextStep();
   };
-
-  const seats = new Array(13).fill(" ");
 
   return (
     <Box>
@@ -58,28 +75,34 @@ export default function Seats({ handleNext }: Props) {
           </Typography>
         </Stack>
       </FlexRow>
-      <Typography>Now pick a seat!</Typography>
-      <Grid container columnSpacing={columnSpacing} rowSpacing={1}>
-        <Grid item xs={8} sx={{ textAlign: "left" }}>
-          <img
-            src="/svg/steering-wheel.svg"
-            alt="steering wheel"
-            width={30}
-            style={{ marginLeft: 26 }}
-          />
-        </Grid>
-        {seats.map((s, index) => (
-          <Seat
-            seatNumber={index + 1}
-            selectedSeatNumber={selectedSeatNumber!}
-            onClick={(number) => setSelectedSeatNumber(number)}
-          />
-        ))}
-      </Grid>
+      {networkRequestStatus !== "succeeded" && <CircularLoader />}
+      {networkRequestStatus === "succeeded" && (
+        <>
+          <Typography>Now pick a seat!</Typography>
+          <Grid container columnSpacing={columnSpacing} rowSpacing={1}>
+            <Grid item xs={8} sx={{ textAlign: "left" }}>
+              <img
+                src="/svg/steering-wheel.svg"
+                alt="steering wheel"
+                width={30}
+                style={{ marginLeft: 26 }}
+              />
+            </Grid>
+            {seats.map((s, index) => (
+              <Seat
+                data={s}
+                selectedSeatNumber={selectedSeatNumber!}
+                onClick={(number) => dispatch(setSeatNumber(number))}
+              />
+            ))}
+          </Grid>
+        </>
+      )}
       <Button
         color="error"
         variant="contained"
-        onClick={handleSeatBooking}
+        onClick={handleContinue}
+        disabled={!selectedSeatNumber}
         sx={{
           p: 1.1,
           mt: 2,

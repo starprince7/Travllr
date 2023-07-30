@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 import { FlexCol } from "../FlexCol";
 import { FlexRow } from "../FlexRow";
@@ -7,9 +8,30 @@ import CustomSelect from "../CustomSelect";
 import DatePicker from "../CustomDatePicker";
 
 export default function BookingForm() {
+  const router = useRouter();
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [departureDate, setDepartureDate] = useState<Date>();
+  const [adultCount, setAdultCount] = useState("");
+
+  const handleSearchForAvailableBuses = () => {
+    if (!departureDate) {
+      return alert("Enter your departure date");
+    }
+    if (!destination) {
+      return alert("Kindly provide a travelling to destination");
+    }
+    if (!origin) {
+      return alert("kindly provide a travelling from location");
+    }
+    if (!adultCount) {
+      return alert("Enter number of travelling adult");
+    }
+
+    router.push(
+      `/search-results?origin=${origin}&destination=${destination}&departureDate=${departureDate.toISOString()}&adultCount=${adultCount}`
+    );
+  };
 
   console.log({ departureDate });
 
@@ -103,12 +125,18 @@ export default function BookingForm() {
             <DatePicker
               onChange={(e: unknown) => setDepartureDate(new Date(e as any))}
             />
-            <CustomSelect label="Adults" items={["1", "2", "3", "4"]} />
+            <CustomSelect
+              value={adultCount}
+              label="Adults"
+              items={["1", "2", "3", "4"]}
+              onChange={(e) => setAdultCount(e.target.value)}
+            />
           </FlexCol>
         </Box>
       </FlexCol>
       <Button
         variant="contained"
+        onClick={handleSearchForAvailableBuses}
         sx={{
           width: "93%",
           py: 1.2,
@@ -116,7 +144,7 @@ export default function BookingForm() {
           mb: 3,
           display: "block",
           borderRadius: 3,
-          //   fontWeight: 300,
+          textTransform: "capitalize",
         }}
       >
         Proceed

@@ -1,10 +1,13 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { useTheme } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 
-import Seats from "./modal/bus-seats/seats";
-import PassengerDetailsForm from "./passenger-details-form";
-import BookingSuccess from "./booking-success";
+import SeatSelectionStep from "./modal/bus-seats/seats";
+import PassengerDetailsFormStep from "./passenger-details-form";
+import BookingSuccessStep from "./booking-success";
+import BookingError from "./booking-error";
+import { selectBusTicket } from "@/store/slices/ticket-info";
+import TicketInformation from "./ticket-information";
 
 const style = {
   position: "absolute" as "absolute",
@@ -19,45 +22,53 @@ const style = {
   textAlign: "center",
 };
 
-type ElementProps = {
-  handleNext: () => void;
-};
-
-const steps = [
-  {
-    label: "Select campaign settings",
-    element: ({ handleNext }: ElementProps) => (
-      <Seats handleNext={handleNext} />
-    ),
-  },
-  {
-    label: "Passenger Details Form",
-    element: () => <PassengerDetailsForm />,
-  },
-  {
-    label: "Successful Booking",
-    element: () => <BookingSuccess />,
-  },
-];
+export type ActiveStep =
+  | "seat_selection"
+  | "passenger_form"
+  | "booking_success"
+  | "booking_error"
+  | "ticket_information";
 
 export default function SeatBookingStepper() {
-  const theme = useTheme();
-  const [activeStep, setActiveStep] = React.useState(2);
-  const maxSteps = steps.length;
+  const { error: bookingError } = useSelector(selectBusTicket);
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStepName, setActiveStepName] =
+    React.useState<ActiveStep>("seat_selection");
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  React.useEffect(() => {
+    if (bookingError) {
+      setActiveStepName("booking_error"); // The Error step: index 3.
+    }
+  }, [bookingError]);
+
+  const goToNextStep = (stepName: ActiveStep) => {
+    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStepName(stepName);
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const goToTicketInformation = () => {
+    setTimeout(() => {
+      setActiveStepName("ticket_information");
+    }, 3200);
   };
-
-  const Dynamic = () => steps[activeStep].element({ handleNext });
 
   return (
     <Box sx={style}>
-      <Dynamic />
+      {activeStepName === "seat_selection" && (
+        <SeatSelectionStep
+          goToNextStep={() => goToNextStep("passenger_form")}
+        />
+      )}
+      {activeStepName === "passenger_form" && (
+        <PassengerDetailsFormStep goToNextStep={goToNextStep} />
+      )}
+      {activeStepName === "booking_error" && (
+        <BookingError goToNextStep={() => goToNextStep("seat_selection")} />
+      )}
+      {activeStepName === "booking_success" && (
+        <BookingSuccessStep goToNextStep={goToTicketInformation} />
+      )}
+      {activeStepName === "ticket_information" && <TicketInformation />}
     </Box>
   );
 }

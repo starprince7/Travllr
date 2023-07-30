@@ -9,7 +9,7 @@ export default function Footer() {
         <Grid
           container
           sx={{
-            gap: { xs: 5, md: 5 },
+            gap: { xs: 5, md: 20 },
             flexDirection: { xs: "column", sm: "row" },
           }}
         >

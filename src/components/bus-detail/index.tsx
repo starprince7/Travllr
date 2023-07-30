@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import SeatIcon from "@mui/icons-material/AirlineSeatReclineExtra";
 import AdultIcon from "@mui/icons-material/Man";
@@ -6,19 +6,52 @@ import ClockIcon from "@mui/icons-material/WatchLater";
 
 import { FlexRow } from "../FlexRow";
 import SeatsModal from "../modal/bus-seats";
-import { Bus } from "@/types/bus";
+import { AvailableBus, Bus } from "@/types/bus";
+import formatToCurrency from "@/utilities/formatCurrency";
+import formatDate from "@/utilities/format-date";
 
 type Props = {
-  bus: Bus;
+  bus: AvailableBus;
+  adultCount: number;
 };
 
-export default function BusDetail({ bus }: Props) {
+interface BookingContext {
+  busId: string;
+  departureDate: string;
+  adultCount: number;
+}
+
+export const BusBookingContext = React.createContext({} as BookingContext);
+
+export default function BusDetail({ bus, adultCount }: Props) {
   const [open, setOpen] = React.useState(false);
+
+  const busId = bus.bus._id;
+  const departureDate = bus.bus.departureDate;
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const contextValues = React.useMemo(
+    () => ({
+      busId,
+      departureDate,
+      adultCount,
+    }),
+    [busId, departureDate, adultCount]
+  );
+
   return (
     <>
+      <Typography variant="h6" sx={{ fontWeight: 600 }}>
+        {bus.bus.destination} {formatDate(departureDate)}. {adultCount} Adult(s)
+      </Typography>
+      <Typography
+        variant="subtitle1"
+        sx={{ my: 2, fontWeight: 600, color: "grey" }}
+      >
+        Select your bus type
+      </Typography>
       <FlexRow
         sx={{
           boxShadow: "0px -3px 40px 6px rgba(0, 0, 0, 0.04)",
@@ -50,9 +83,12 @@ export default function BusDetail({ bus }: Props) {
           <Typography variant="h5" fontWeight={800}>
             Toyota (Hiace X)
           </Typography>
-          <Typography variant="body2" sx={{ my: 2 }}>
-            Port Harcourt to ==&gt; Lagos Festac (mazamaza) July 25, 2023. 1
-            Adult(s)
+          <Typography variant="body2" sx={{ my: 2, color: "gray" }}>
+            Departure: <b>{bus.bus.origin} =&gt;</b> Arrival:{" "}
+            <b>
+              {bus.bus.destination} {formatDate(departureDate)}. {adultCount}{" "}
+              Adult(s)
+            </b>
           </Typography>
           <FlexRow flexWrap="wrap" gap={1}>
             <Typography
@@ -61,7 +97,7 @@ export default function BusDetail({ bus }: Props) {
               sx={{ display: "flex", alignItems: "center", fontWeight: 700 }}
             >
               <SeatIcon />
-              <span>9 seats available</span>
+              <span>{bus.availableSeats} seats available</span>
             </Typography>
             <Typography
               variant="caption"
@@ -69,7 +105,7 @@ export default function BusDetail({ bus }: Props) {
               sx={{ display: "flex", alignItems: "center", fontWeight: 700 }}
             >
               <ClockIcon fontSize="small" />
-              <span>07:30 AM</span>
+              <span>{bus.departureTime}</span>
             </Typography>
             <Typography
               variant="caption"
@@ -77,7 +113,7 @@ export default function BusDetail({ bus }: Props) {
               sx={{ display: "flex", alignItems: "center", fontWeight: 700 }}
             >
               <AdultIcon fontSize="small" />
-              <span>Adult: 1</span>
+              <span>Adult: {adultCount}</span>
             </Typography>
           </FlexRow>
         </Box>
@@ -89,7 +125,7 @@ export default function BusDetail({ bus }: Props) {
           }}
         >
           <Typography variant="h5" fontWeight={800} sx={{ my: 2 }}>
-            N26,100
+            {formatToCurrency(bus.bus.seatPrice)}
           </Typography>
           <Button
             color="error"
@@ -108,7 +144,9 @@ export default function BusDetail({ bus }: Props) {
           </Button>
         </Box>
       </FlexRow>
-      <SeatsModal open={open} handleClose={handleClose} />
+      <BusBookingContext.Provider value={contextValues}>
+        <SeatsModal open={open} handleClose={handleClose} />
+      </BusBookingContext.Provider>
     </>
   );
 }

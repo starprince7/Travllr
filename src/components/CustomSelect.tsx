@@ -33,6 +33,7 @@ export default function CustomSelect({
         {label}
       </InputLabel>
       <Select
+        required
         label={label}
         value={value}
         onChange={onChange}
