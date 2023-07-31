@@ -98,6 +98,7 @@ export default function BookingForm() {
               color: "#ffffff66",
               fontWeight: 600,
               marginLeft: "auto",
+              mr: { xs: 2, sm: 1 },
               borderBottom: "solid 3px #56ccf2",
               display: "block",
               borderBottomLeftRadius: 0,
