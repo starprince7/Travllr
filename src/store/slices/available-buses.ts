@@ -32,7 +32,16 @@ export const fetchAvailableBuses = createAsyncThunk<any, FetchAvailableBusArgs>(
 const slice = createSlice({
   name: "AvailableBuses",
   initialState,
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.errorMessage = "";
+      state.apiError = {
+        message: "",
+        statusCode: 0,
+        error: false,
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchAvailableBuses.pending, (state) => {
       state.networkRequestStatus = "loading";
@@ -40,15 +49,19 @@ const slice = createSlice({
     builder.addCase(fetchAvailableBuses.rejected, (state, action) => {
       (state.networkRequestStatus = "failed"),
         (state.errorMessage = action.error.message!);
-      state.apiError = action.payload as any;
     });
     builder.addCase(fetchAvailableBuses.fulfilled, (state, action) => {
       state.networkRequestStatus = "succeeded";
-      state.availableBuses = action.payload.availableBuses;
+      if (action.payload.error) {
+        state.apiError = action.payload as any;
+      } else {
+        state.availableBuses = action.payload.availableBuses;
+      }
     });
   },
 });
 
 export const selectAvailableBuses = (store: any) =>
   store.AvailableBuses as AvailableBusStore;
+export const { clearError } = slice.actions;
 export default slice.reducer;

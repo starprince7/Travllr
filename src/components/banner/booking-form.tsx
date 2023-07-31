@@ -27,7 +27,7 @@ export default function BookingForm() {
   );
   const [adultCount, setAdultCount] = useState("");
 
-  const { networkRequestStatus, availableBuses } =
+  const { networkRequestStatus, availableBuses, apiError } =
     useSelector(selectAvailableBuses);
 
   const handleSearchForAvailableBuses = () => {
@@ -61,10 +61,14 @@ export default function BookingForm() {
   };
 
   useEffect(() => {
-    if (availableBuses.length > 0) {
+    if (availableBuses?.length > 0) {
       router.push(`/search-results?adultCount=${adultCount}`);
     }
-  }, [availableBuses]);
+    if (apiError.error) {
+      console.log("apiError :", apiError);
+      router.push(`/search-results`);
+    }
+  }, [availableBuses, apiError]);
 
   return (
     <Box

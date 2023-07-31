@@ -4,6 +4,8 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { FlexRow } from "../FlexRow";
 import Footer from "../footer";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { clearError } from "@/store/slices/available-buses";
 
 type Props = {
   error: {
@@ -14,6 +16,7 @@ type Props = {
 };
 
 export default function BeautifulError({ error }: Props) {
+  const dispatch = useDispatch();
   const router = useRouter();
   return (
     <>
@@ -31,7 +34,10 @@ export default function BeautifulError({ error }: Props) {
           <Typography>{error?.message}</Typography>
           <Button
             sx={{ textTransform: "capitalize", fontWeight: 600, mt: 1 }}
-            onClick={() => router.back()}
+            onClick={() => {
+              dispatch(clearError());
+              router.back();
+            }}
           >
             Go back
           </Button>
