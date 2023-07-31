@@ -1,18 +1,34 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { FlexCol } from "../FlexCol";
 import { FlexRow } from "../FlexRow";
 import CustomSelect from "../CustomSelect";
 import DatePicker from "../CustomDatePicker";
+import { LoadingButton } from "@mui/lab";
+import {
+  fetchAvailableBuses,
+  selectAvailableBuses,
+} from "@/store/slices/available-buses";
+import { useDispatch, useSelector } from "react-redux";
+import { AnyAction } from "@reduxjs/toolkit";
+import formatDate from "@/utilities/format-date";
+
+const DEFAULT_DEPARTURE_DATE = "2023-07-28T23:00:00.000Z"; // 2023-07-28T17:42:42.298Z - returns a bus with all seats available.
 
 export default function BookingForm() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
-  const [departureDate, setDepartureDate] = useState<Date>();
+  const [departureDate, setDepartureDate] = useState<Date>(
+    new Date(DEFAULT_DEPARTURE_DATE)
+  );
   const [adultCount, setAdultCount] = useState("");
+
+  const { networkRequestStatus, availableBuses } =
+    useSelector(selectAvailableBuses);
 
   const handleSearchForAvailableBuses = () => {
     if (!departureDate) {
@@ -27,13 +43,28 @@ export default function BookingForm() {
     if (!adultCount) {
       return alert("Enter number of travelling adult");
     }
+    const message = `Hey there!👋\nHere's the deal: The backend service been used to plan future bus trips is more like a pet side project, so it's not actively managed and updated like a big official thing. Right now, we can only look at buses available on ${formatDate(
+      DEFAULT_DEPARTURE_DATE
+    )}. I'll do my best to update the buses for future dates every now and then, but until then, all departure dates will be set to ${formatDate(
+      DEFAULT_DEPARTURE_DATE
+    )}. Thanks for giving this project a try, you rock!\n\nSearch available bus is running, kindly click OK to continue.`;
 
-    router.push(
-      `/search-results?origin=${origin}&destination=${destination}&departureDate=${departureDate.toISOString()}&adultCount=${adultCount}`
+    alert(message);
+
+    dispatch(
+      fetchAvailableBuses({
+        departureDate: departureDate.toISOString(),
+        destination,
+        origin,
+      }) as unknown as AnyAction
     );
   };
 
-  console.log({ departureDate });
+  useEffect(() => {
+    if (availableBuses.length > 0) {
+      router.push(`/search-results?adultCount=${adultCount}`);
+    }
+  }, [availableBuses]);
 
   return (
     <Box
@@ -134,7 +165,8 @@ export default function BookingForm() {
           </FlexCol>
         </Box>
       </FlexCol>
-      <Button
+      <LoadingButton
+        loading={networkRequestStatus === "loading"}
         variant="contained"
         onClick={handleSearchForAvailableBuses}
         sx={{
@@ -148,7 +180,7 @@ export default function BookingForm() {
         }}
       >
         Proceed
-      </Button>
+      </LoadingButton>
     </Box>
   );
 }

@@ -31,3 +31,11 @@ export interface ApiErrorResponse {
   statusCode: number;
   error: boolean;
 }
+
+// ***** For Redux Store
+export interface AvailableBusStore {
+  errorMessage: string;
+  availableBuses: AvailableBus[];
+  networkRequestStatus: string;
+  apiError: ApiErrorResponse;
+}

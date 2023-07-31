@@ -1,29 +1,22 @@
 import Header from "@/components/header";
-import { Container, Typography } from "@mui/material";
+import { useRouter } from "next/router";
+import { Container } from "@mui/material";
 
 import Footer from "@/components/footer";
-import SeatsModal from "@/components/modal/bus-seats";
 import { FlexCol } from "@/components/FlexCol";
 import BusDetail from "@/components/bus-detail";
-import { GetServerSidePropsContext } from "next";
 import BeautifulError from "@/components/error";
-import { ApiErrorResponse, ApiResponse } from "@/types/bus";
+import { useSelector } from "react-redux";
+import { selectAvailableBuses } from "@/store/slices/available-buses";
 
-type PageProps = {
-  data: ApiResponse;
-  adultCount: number;
-  error: ApiErrorResponse;
-};
+export default function BusSearchResult() {
+  const { availableBuses, apiError } = useSelector(selectAvailableBuses);
+  const router = useRouter();
+  const adultCount = router.query.adultCount as string;
+  console.log({ adultCount });
 
-export default function BusSearchResult({
-  data,
-  adultCount,
-  error,
-}: PageProps) {
-  const availableBuses = data?.availableBuses;
-
-  if (error) {
-    return <BeautifulError error={error} />;
+  if (apiError.error) {
+    return <BeautifulError error={apiError} />;
   }
 
   return (
@@ -32,7 +25,7 @@ export default function BusSearchResult({
       <Container sx={{ mt: 2.5 }}>
         <FlexCol>
           {availableBuses.map((bus, i) => (
-            <BusDetail adultCount={adultCount} bus={bus} key={i} />
+            <BusDetail adultCount={Number(adultCount)} bus={bus} key={i} />
           ))}
         </FlexCol>
       </Container>
@@ -41,36 +34,36 @@ export default function BusSearchResult({
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { origin, destination, departureDate, adultCount } = context.query;
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//   const { origin, destination, departureDate, adultCount } = context.query;
 
-  console.log(context.query);
+//   console.log(context.query);
 
-  const response = await fetch(
-    `${process.env.API_URL}/buses/search?origin=${origin}&destination=${destination}&departureDate=${departureDate}`
-  );
-  const data = await response.json();
+//   const response = await fetch(
+//     `${process.env.API_URL}/buses/search?origin=${origin}&destination=${destination}&departureDate=${departureDate}`
+//   );
+//   const data = await response.json();
 
-  console.log("The data returened :", data);
+//   console.log("The data returened :", data);
 
-  if (data.error) {
-    return {
-      props: {
-        error: JSON.parse(JSON.stringify(data)),
-      },
-    };
-  } else if (data) {
-    return {
-      props: {
-        adultCount: Number(adultCount),
-        data: JSON.parse(JSON.stringify(data)),
-      },
-    };
-  }
+//   if (data.error) {
+//     return {
+//       props: {
+//         error: JSON.parse(JSON.stringify(data)),
+//       },
+//     };
+//   } else if (data) {
+//     return {
+//       props: {
+//         adultCount: Number(adultCount),
+//         data: JSON.parse(JSON.stringify(data)),
+//       },
+//     };
+//   }
 
-  return {
-    props: {
-      data: [],
-    },
-  };
-}
+//   return {
+//     props: {
+//       data: [],
+//     },
+//   };
+// }

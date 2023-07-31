@@ -23,7 +23,6 @@ const slice = createSlice({
       state.departureDate = action.payload;
     },
     setSeatNumber: (state, action: PayloadAction<number>) => {
-      console.log(action);
       state.seatNumber = action.payload;
     },
     setBusId: (state, action: PayloadAction<string>) => {
