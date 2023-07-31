@@ -29,5 +29,5 @@ a {
 }
 
 .MuiInputBase-input {
-  color: white; /* Set the text color to white */
+  color: white !important;
 }
