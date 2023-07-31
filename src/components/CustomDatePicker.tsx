@@ -1,6 +1,11 @@
 import { Typography } from "@mui/material";
-import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
+import {
+  LocalizationProvider,
+  MobileDatePicker,
+  DatePicker as DatePicker_,
+} from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import styles from "../styles/booking-form.module.css";
 
 type Props = {
   onChange: (value: unknown) => void;
@@ -19,8 +24,12 @@ export default function DatePicker({ onChange }: Props) {
       </Typography>
       <MobileDatePicker
         disablePast
-        className="custom_date_picker"
-        sx={{ width: "100%", mb: 1.5, color: "white !important" }}
+        className={styles.MuiInputBaseInput}
+        sx={{
+          width: "100%",
+          mb: 1.5,
+          ".MuiInputBase-input": { color: "white !important" },
+        }}
         onChange={onChange}
       />
     </LocalizationProvider>
