@@ -158,7 +158,10 @@ export default function BookingForm() {
           {/* Date component */}
           <FlexCol>
             <DatePicker
-              onChange={(e: unknown) => setDepartureDate(new Date(e as any))}
+              // onChange={(e: unknown) => setDepartureDate(new Date(e as any))}
+              onChange={(e: unknown) =>
+                setDepartureDate(new Date(DEFAULT_DEPARTURE_DATE as any))
+              }
             />
             <CustomSelect
               value={adultCount}
