@@ -19,7 +19,8 @@ export default function DatePicker({ onChange }: Props) {
       </Typography>
       <MobileDatePicker
         disablePast
-        sx={{ width: "100%", mb: 1.5 }}
+        className="custom_date_picker"
+        sx={{ width: "100%", mb: 1.5, color: "white !important" }}
         onChange={onChange}
       />
     </LocalizationProvider>
