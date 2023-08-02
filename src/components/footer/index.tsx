@@ -65,7 +65,7 @@ export default function Footer() {
         </Grid>
         <Box sx={{ textAlign: "center", pt: 8 }}>
           <Typography fontSize="small">
-            &copy;2023 by{" "}
+            &copy; 2023 Developed by{" "}
             <Link href="https://princenweke.com">Prince A. Nweke</Link>
           </Typography>
         </Box>

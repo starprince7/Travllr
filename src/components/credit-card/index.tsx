@@ -14,7 +14,7 @@ export default function CreditCard() {
             The lightest digital wallet you will ever own
           </Typography>
           <Typography variant="subtitle2" sx={{ my: 5 }}>
-            The Bat digital wallet is a seamless way to pay for transactions
+            The Travllr digital wallet is a seamless way to pay for transactions
             within our ecosystem. Purchase bus tickets, airtime, data and pay
             for utility bills using the digital wallet available only on the
             mobile app.

@@ -40,8 +40,8 @@ export default function Banner() {
               The modern way to commute across cities
             </Typography>
             <Typography variant="subtitle2" sx={{ my: 2.5 }}>
-              Bat-transport is an African technology powered company, providing
-              seamless mobility services to commuters across Africa
+              Travllr is a Global technology powered company, providing seamless
+              mobility services to commuters across the globe.
             </Typography>
           </Box>
           <BookingForm />

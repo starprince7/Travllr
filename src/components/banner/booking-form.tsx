@@ -43,7 +43,7 @@ export default function BookingForm() {
     if (!adultCount) {
       return alert("Enter number of travelling adult");
     }
-    const message = `Hey there!👋\nHere's the deal: The backend service been used to plan future bus trips is more like a pet side project, so it's not actively managed and updated like a big official thing. Right now, we can only look at buses available on ${formatDate(
+    const message = `Hey there!👋\n\nHere's the deal: The backend service been used to plan future bus trips is more like a pet side project, so it's not actively managed and updated like a big official thing.\n\nRight now, we can only look at buses available on ${formatDate(
       DEFAULT_DEPARTURE_DATE
     )}. I'll do my best to update the buses for future dates every now and then, but until then, all departure dates will be set to ${formatDate(
       DEFAULT_DEPARTURE_DATE
