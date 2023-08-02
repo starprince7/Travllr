@@ -66,7 +66,7 @@ export default function Footer() {
         <Box sx={{ textAlign: "center", pt: 8 }}>
           <Typography fontSize="small">
             &copy; 2023 Developed by{" "}
-            <Link href="https://princenweke.com">Prince A. Nweke</Link>
+            <Link href="https://princenweke.com">Prince Agezi N.</Link>
           </Typography>
         </Box>
       </Container>

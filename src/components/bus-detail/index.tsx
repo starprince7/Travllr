@@ -12,7 +12,6 @@ import formatDate from "@/utilities/format-date";
 
 type Props = {
   bus: AvailableBus;
-  adultCount: number;
 };
 
 interface BookingContext {
@@ -21,9 +20,10 @@ interface BookingContext {
   adultCount: number;
 }
 
+const adultCount = 0;
 export const BusBookingContext = React.createContext({} as BookingContext);
 
-export default function BusDetail({ bus, adultCount }: Props) {
+export default function BusDetail({ bus }: Props) {
   const [open, setOpen] = React.useState(false);
 
   const busId = bus.bus._id;
@@ -44,7 +44,7 @@ export default function BusDetail({ bus, adultCount }: Props) {
   return (
     <>
       <Typography variant="h6" sx={{ fontWeight: 600 }}>
-        {bus.bus.destination} {formatDate(departureDate)}. {adultCount} Adult(s)
+        {bus.bus.destination} {formatDate(departureDate)}
       </Typography>
       <Typography
         variant="subtitle1"
@@ -86,8 +86,7 @@ export default function BusDetail({ bus, adultCount }: Props) {
           <Typography variant="body2" sx={{ my: 2, color: "gray" }}>
             Departure: <b>{bus.bus.origin} =&gt;</b> Arrival:{" "}
             <b>
-              {bus.bus.destination} {formatDate(departureDate)}. {adultCount}{" "}
-              Adult(s)
+              {bus.bus.destination} {formatDate(departureDate)}
             </b>
           </Typography>
           <FlexRow flexWrap="wrap" gap={1}>
@@ -97,7 +96,10 @@ export default function BusDetail({ bus, adultCount }: Props) {
               sx={{ display: "flex", alignItems: "center", fontWeight: 700 }}
             >
               <SeatIcon />
-              <span>{bus.availableSeats} seats available</span>
+              <span>
+                {bus.availableSeats} seat{bus.availableSeats > 1 && "s"}{" "}
+                available
+              </span>
             </Typography>
             <Typography
               variant="caption"
@@ -113,7 +115,7 @@ export default function BusDetail({ bus, adultCount }: Props) {
               sx={{ display: "flex", alignItems: "center", fontWeight: 700 }}
             >
               <AdultIcon fontSize="small" />
-              <span>Adult: {adultCount}</span>
+              <span>Passenger: 1</span>
             </Typography>
           </FlexRow>
         </Box>

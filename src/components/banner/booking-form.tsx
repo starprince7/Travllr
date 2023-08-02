@@ -25,7 +25,6 @@ export default function BookingForm() {
   const [departureDate, setDepartureDate] = useState<Date>(
     new Date(DEFAULT_DEPARTURE_DATE)
   );
-  const [adultCount, setAdultCount] = useState("");
 
   const { networkRequestStatus, availableBuses, apiError } =
     useSelector(selectAvailableBuses);
@@ -40,9 +39,7 @@ export default function BookingForm() {
     if (!origin) {
       return alert("kindly provide a travelling from location");
     }
-    if (!adultCount) {
-      return alert("Enter number of travelling adult");
-    }
+
     const message = `Hey there!👋\n\nHere's the deal: The backend service been used to plan future bus trips is more like a pet side project, so it's not actively managed and updated like a big official thing.\n\nRight now, we can only look at buses available on ${formatDate(
       DEFAULT_DEPARTURE_DATE
     )}. I'll do my best to update the buses for future dates every now and then, but until then, all departure dates will be set to ${formatDate(
@@ -59,16 +56,6 @@ export default function BookingForm() {
       }) as unknown as AnyAction
     );
   };
-
-  useEffect(() => {
-    if (availableBuses?.length > 0) {
-      router.push(`/search-results?adultCount=${adultCount}`);
-    }
-    if (apiError.error) {
-      console.log("apiError :", apiError);
-      router.push(`/search-results`);
-    }
-  }, [availableBuses, apiError]);
 
   return (
     <Box
@@ -163,12 +150,6 @@ export default function BookingForm() {
               onChange={(e: unknown) =>
                 setDepartureDate(new Date(DEFAULT_DEPARTURE_DATE as any))
               }
-            />
-            <CustomSelect
-              value={adultCount}
-              label="Adults"
-              items={["1", "2", "3", "4"]}
-              onChange={(e) => setAdultCount(e.target.value)}
             />
           </FlexCol>
         </Box>

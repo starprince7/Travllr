@@ -57,6 +57,7 @@ const slice = createSlice({
       } else {
         state.availableBuses = action.payload.availableBuses;
       }
+      location.assign(`/search-results`);
     });
   },
 });
