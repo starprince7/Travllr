@@ -19,7 +19,7 @@ export default function Header() {
                 color="error"
                 sx={{ fontWeight: 800, fontFamily: "Montserrat" }}
               >
-                Travllr
+                busQuest
               </Typography>
             </Link>
             <Box>

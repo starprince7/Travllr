@@ -14,10 +14,10 @@ export default function CreditCard() {
             The lightest digital wallet you will ever own
           </Typography>
           <Typography variant="subtitle2" sx={{ my: 5 }}>
-            The Travllr digital wallet is a seamless way to pay for transactions
-            within our ecosystem. Purchase bus tickets, airtime, data and pay
-            for utility bills using the digital wallet available only on the
-            mobile app.
+            The BusQuest digital wallet is a seamless way to pay for
+            transactions within our ecosystem. Purchase bus tickets, airtime,
+            data and pay for utility bills using the digital wallet available
+            only on the mobile app.
           </Typography>
         </Box>
         <Box sx={{ width: { xs: "100%", sm: 300, md: 450, lg: 500 } }}>
