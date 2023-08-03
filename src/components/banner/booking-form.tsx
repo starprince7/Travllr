@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "@reduxjs/toolkit";
 import formatDate from "@/utilities/format-date";
 
-const DEFAULT_DEPARTURE_DATE = "2023-07-28T23:00:00.000Z"; // 2023-07-28T17:42:42.298Z - returns a bus with all seats available.
+const DEFAULT_DEPARTURE_DATE = "2023-08-17T23:00:00.000Z"; // "2023-07-28T23:00:00.000Z";  2023-07-28T17:42:42.298Z - returns a bus with all seats available.
 
 export default function BookingForm() {
   const dispatch = useDispatch();
