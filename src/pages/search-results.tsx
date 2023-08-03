@@ -11,9 +11,6 @@ import { selectAvailableBuses } from "@/store/slices/available-buses";
 
 export default function BusSearchResult() {
   const { availableBuses, apiError } = useSelector(selectAvailableBuses);
-  const router = useRouter();
-  const adultCount = router.query.adultCount as string;
-  console.log({ adultCount });
 
   if (apiError.error) {
     return <BeautifulError error={apiError} />;
@@ -25,7 +22,7 @@ export default function BusSearchResult() {
       <Container sx={{ mt: 2.5 }}>
         <FlexCol>
           {availableBuses.map((bus, i) => (
-            <BusDetail adultCount={Number(adultCount)} bus={bus} key={i} />
+            <BusDetail bus={bus} key={i} />
           ))}
         </FlexCol>
       </Container>
