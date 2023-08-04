@@ -32,15 +32,20 @@ export default function SeatSelectionStep({ goToNextStep }: Props) {
   const { seats, networkRequestStatus } = useSelector(selectSeats);
   const { busId } = useContext(BusBookingContext);
 
+  // Create a deep copy of the busSeats array and then sort the copy in ascending order.
+  const sortedSeats = JSON.parse(JSON.stringify(seats)).sort(
+    (a: any, b: any) => a.seatNumber - b.seatNumber
+  ) as BusSeat[];
+
   const dispatch = useDispatch();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const columnSpacing = isSmallScreen ? 4 : 9;
 
   useEffect(() => {
-    if (seats.length > 0) return;
+    // if (seats.length > 0) return;
     dispatch(fetchSeats(busId) as unknown as AnyAction);
-  }, [seats]);
+  }, [busId]);
 
   const handleContinue = () => {
     goToNextStep();
@@ -88,7 +93,7 @@ export default function SeatSelectionStep({ goToNextStep }: Props) {
                 style={{ marginLeft: 26 }}
               />
             </Grid>
-            {seats.map((s, index) => (
+            {sortedSeats.map((s, index) => (
               <Seat
                 key={index}
                 data={s}

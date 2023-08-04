@@ -17,17 +17,21 @@ type Props = {
 interface BookingContext {
   busId: string;
   departureDate: string;
+  registrationNumber: string;
   adultCount: number;
+  handleClose: () => void;
 }
 
 const adultCount = 0;
+// Create a context for each available bus returned.
 export const BusBookingContext = React.createContext({} as BookingContext);
 
-export default function BusDetail({ bus }: Props) {
+export default function AvailableBusDetail({ bus }: Props) {
   const [open, setOpen] = React.useState(false);
 
   const busId = bus.bus._id;
   const departureDate = bus.bus.departureDate;
+  const registrationNumber = bus.bus.registrationNumber;
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -37,8 +41,10 @@ export default function BusDetail({ bus }: Props) {
       busId,
       departureDate,
       adultCount,
+      registrationNumber,
+      handleClose,
     }),
-    [busId, departureDate, adultCount]
+    [busId, departureDate, adultCount, registrationNumber, handleClose]
   );
 
   return (

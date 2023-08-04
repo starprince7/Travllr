@@ -44,7 +44,7 @@ export default function BookingForm() {
       DEFAULT_DEPARTURE_DATE
     )}. I'll do my best to update the buses for future dates every now and then, but until then, all departure dates will be set to ${formatDate(
       DEFAULT_DEPARTURE_DATE
-    )}. Thanks for giving this project a try, you rock!\n\nYour search for available bus is running, kindly click OK to continue.`;
+    )}. Thanks for giving this project a try, you rock!\n\nYour search for available bus is running, kindly click OK/Close to continue.`;
 
     alert(message);
 
