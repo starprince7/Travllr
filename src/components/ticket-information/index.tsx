@@ -12,7 +12,7 @@ import sleep from "@/utilities/sleep";
 
 export default function TicketInformation() {
   const router = useRouter();
-  const { busTicket } = useSelector(selectBusTicket);
+  const { seat } = useSelector(selectBusTicket);
   const { email, busId } = useSelector(selectBookingProgress);
   const { registrationNumber, departureDate, handleClose } =
     useContext(BusBookingContext);
@@ -39,7 +39,7 @@ export default function TicketInformation() {
           }}
         >
           <Typography color="CaptionText">
-            <b>Bus ID:</b> {busTicket._id}
+            <b>Bus ID:</b> {seat.bus._id}
           </Typography>
         </FlexRow>
         <FlexRow
@@ -81,7 +81,7 @@ export default function TicketInformation() {
           }}
         >
           <Typography color="CaptionText">
-            <b>Seat Number:</b> {busTicket.seatNumber}
+            <b>Seat Number:</b> {seat.seatNumber}
           </Typography>
         </FlexRow>
         <FlexRow
@@ -95,7 +95,7 @@ export default function TicketInformation() {
           }}
         >
           <Typography color="CaptionText">
-            <b>Booking Date:</b> {formatDate(busTicket.bookingDate!)}
+            <b>Booking Date:</b> {formatDate(seat.bookingDate!)}
           </Typography>
         </FlexRow>
         <FlexRow
@@ -123,7 +123,7 @@ export default function TicketInformation() {
           }}
         >
           <Typography color="CaptionText">
-            <b>Booking Status:</b> {busTicket.isBooked ? "SUCCESS" : "FAILED"}
+            <b>Booking Status:</b> {seat.isBooked ? "SUCCESS" : "FAILED"}
           </Typography>
         </FlexRow>
         <FlexRow
@@ -137,7 +137,7 @@ export default function TicketInformation() {
           }}
         >
           <Typography color="CaptionText">
-            <b>Passenger Name:</b> {busTicket.passengerName}
+            <b>Passenger Name:</b> {seat.passengerName}
           </Typography>
         </FlexRow>
         <Alert variant="filled" color="info" sx={{ mt: 3 }}>

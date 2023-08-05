@@ -1,8 +1,8 @@
 import { BusSeat } from "@/types/seat";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState: TicketStore = {
-  busTicket: {
+const initialState: SeatTicket = {
+  seat: {
     __v: 0,
     _id: "",
     bookingDate: "",
@@ -20,7 +20,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     setBusTicket: (state, action: PayloadAction<BusSeat>) => {
-      state.busTicket = action.payload;
+      state.seat = action.payload;
     },
     setBookingError: (state, action: PayloadAction<ErrorInfo>) => {
       state.error = action.payload;
@@ -29,7 +29,7 @@ const slice = createSlice({
 });
 
 export const { setBusTicket, setBookingError } = slice.actions;
-export const selectBusTicket = (store: any) => store.Ticket as TicketStore; // Selector
+export const selectBusTicket = (store: any) => store.Ticket as SeatTicket; // Selector
 export default slice.reducer;
 
 type ErrorInfo = {
@@ -38,7 +38,7 @@ type ErrorInfo = {
   statusCode: number;
 };
 
-type TicketStore = {
-  busTicket: BusSeat;
+type SeatTicket = {
+  seat: BusSeat;
   error: ErrorInfo | null;
 };
