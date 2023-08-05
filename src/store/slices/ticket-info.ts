@@ -7,7 +7,7 @@ const initialState: SeatTicket = {
     _id: "",
     bookingDate: "",
     isBooked: false,
-    bus: "",
+    bus: null as any,
     passengerName: "",
     price: 0,
     seatNumber: 0,
